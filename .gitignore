@@ -1,2 +1,3 @@
 scripts/__pycache__/**
 Datasets/**
+notebook/logreg_submission.csv/**
