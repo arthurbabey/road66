@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os,sys
 from PIL import Image
+from sklearn.preprocessing import PolynomialFeatures
 
 
 # Helper functions
@@ -93,12 +94,32 @@ def extract_img_features(filename):
     X = np.asarray([ extract_features_2d(img_patches[i]) for i in range(len(img_patches))])
     return X
 
-def value_to_class(v):
+def value_to_class(v, foreground_threshold=0.25): #modifier leur fonction en ajoutant f_t en param
+
     df = np.sum(v)
     if df > foreground_threshold:
         return 1
     else:
         return 0
+
+def mask_to_submission_strings(image_filename):
+    """Reads a single image and outputs the strings that should go into the submission file"""
+    img_number = int(re.search(r"\d+", image_filename).group(0))
+    im = mpimg.imread(image_filename)
+    patch_size = 16
+    for j in range(0, im.shape[1], patch_size):
+        for i in range(0, im.shape[0], patch_size):
+            patch = im[i:i + patch_size, j:j + patch_size]
+            label = patch_to_label(patch)
+            yield("{:03d}_{}_{},{}".format(img_number, j, i, label))
+
+
+def masks_to_submission(submission_filename, *image_filenames):
+    """Converts images into a submission file"""
+    with open(submission_filename, 'w') as f:
+        f.write('id,prediction\n')
+        for fn in image_filenames[0:]:
+            f.writelines('{}\n'.format(s) for s in mask_to_submission_strings(fn))
 
 
 def create_submission(y_pred, submission_filename, patch_size = 16, images_size = 608):
@@ -113,3 +134,15 @@ def create_submission(y_pred, submission_filename, patch_size = 16, images_size 
                 for k in range(img.shape[1]):
                     name = '{:03d}_{}_{},{}'.format(i + 1, j * patch_size, k * patch_size, int(img[j,k]))
                     f.write(name + '\n')
+
+
+
+def poly_augmentation(X, degree):
+    """
+    increase the number of features
+    hyperparameter
+
+    """
+    poly = PolynomialFeatures(degree, interaction_only=False, include_bias=True)
+
+    return poly.fit_transform(X)
