@@ -6,6 +6,7 @@ import os,sys
 from PIL import Image
 from sklearn.preprocessing import PolynomialFeatures
 from skimage import feature
+from skimage.color import rgb2gray
 
 # Helper functions
 
@@ -75,13 +76,32 @@ def make_img_overlay(img, predicted_img):
 
 # Extract 6-dimensional features consisting of average RGB color as well as variance
 def extract_features(img):
+
+    """
     feat_m = np.mean(img, axis=(0,1))
     feat_v = np.var(img, axis=(0,1))
     feat = np.append(feat_m, feat_v)
     return feat
+    """
+
+    #gray = extract_gray_image(img)
+    #edge = fanny_filter(img)
+
+    #img = np.concatenate((img, gray), axis = 2)
+    #img = np.concatenate((img, edge), axis = 2)
+
+    feat_m = np.mean(img, axis=(0,1))
+    feat_v = np.var(img, axis=(0,1))
+    feat = np.append(feat_m, feat_v)
+
+    return feat
 
 # Extract 2-dimensional features consisting of average gray color as well as variance
 def extract_features_2d(img):
+
+    #img = fanny_filter(img)
+    #img = np.concatenate((img, imgf), axis = 2)
+
     feat_m = np.mean(img)
     feat_v = np.var(img)
     feat = np.append(feat_m, feat_v)
@@ -90,8 +110,8 @@ def extract_features_2d(img):
 # Extract features for a given image
 def extract_img_features(filename):
     img = load_image(filename)
-    img_patches = img_crop(img, patch_size, patch_size)
-    X = np.asarray([ extract_features_2d(img_patches[i]) for i in range(len(img_patches))])
+    img_patches = img_crop(img, 16, 16)
+    X = np.asarray([ extract_features(img_patches[i]) for i in range(len(img_patches))])
     return X
 
 def value_to_class(v, foreground_threshold=0.25): #modifier leur fonction en ajoutant f_t en param
@@ -147,36 +167,32 @@ def poly_augmentation(X, degree):
 
     return poly.fit_transform(X)
 
-# Convert array of labels to an image
-
-def label_to_img(imgwidth, imgheight, w, h, labels):
-    im = np.zeros([imgwidth, imgheight])
-    idx = 0
-    for i in range(0,imgheight,h):
-        for j in range(0,imgwidth,w):
-            im[j:j+w, i:i+h] = labels[idx]
-            idx = idx + 1
-    return im
-
-def make_img_overlay(img, predicted_img):
-    w = img.shape[0]
-    h = img.shape[1]
-    color_mask = np.zeros((w, h, 3), dtype=np.uint8)
-    color_mask[:,:,0] = predicted_img*255
-
-    img8 = img_float_to_uint8(img)
-    background = Image.fromarray(img8, 'RGB').convert("RGBA")
-    overlay = Image.fromarray(color_mask, 'RGB').convert("RGBA")
-    new_img = Image.blend(background, overlay, 0.2)
-    return new_img
-
 """
+
 
 def fanny_filter(im, sigma=2):
 
+    im_gray = rgb2gray(im)
+    #good_shape = [im_gray[0], im_gray[1], 1]
+    #print(good_shape.shape, im_gray.shape)
+    #im_gray = np.reshape(im_gray, good_shape)
 
-    edges = feature.canny(im, sigma)
+    edges = feature.canny(im_gray, sigma)
+    #edges = np.uint8(edges)
 
     return edges
 
+
+
+def extract_gray_image(im):
+    # Function to get gray scale image in correct shape
+    #    parameters: - original image
+    #    return:     - grayscale image
+    #
+    gray_image = rgb2gray(im)
+
+    one_layer_shape = [gray_image.shape[0], gray_image.shape[1], 1]
+    data_out = np.reshape(gray_image, one_layer_shape)
+
+    return data_out
 """
