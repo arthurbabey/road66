@@ -1,4 +1,6 @@
 scripts/__pycache__/**
 Datasets/**
 notebook/logreg_submission.csv/**
+notebook/DS_Store/**
+notebook/ipynb_checkpoints/**
 .DS_Store/**
