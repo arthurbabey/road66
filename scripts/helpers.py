@@ -7,6 +7,7 @@ from PIL import Image
 from sklearn.preprocessing import PolynomialFeatures
 from skimage import feature
 from skimage.color import rgb2gray
+from skimage.transform import rotate
 
 # Helper functions
 
@@ -196,3 +197,31 @@ def extract_gray_image(im):
 
     return data_out
 """
+
+def rotate_images(X, Y , degrees):
+    """
+    increase the number of data
+    by adding rotations of the base data
+
+    """
+
+    X = np.array(X)
+    Y = np.array(Y)
+    rotimg = np.zeros(X.shape)
+    rotgtimg = np.zeros(Y.shape)
+    
+    Xtemp = X
+    Ytemp = Y
+    
+    #rotate all images by degree and add them to the data vector
+    for degree in degrees:
+        for i in range(len(Xtemp)):
+            rotimg[i] = rotate(Xtemp[i], degree, resize=False, mode='reflect')
+            rotgtimg[i] = rotate(Ytemp[i], degree, resize=False, mode='reflect')
+        X = np.concatenate([X,rotimg])
+        Y = np.concatenate([Y,rotgtimg])
+
+    return X,Y
+
+
+
