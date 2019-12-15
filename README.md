@@ -31,6 +31,16 @@ prediction task.
 Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
  
+ ### Contributors
+
+- Benoît Hohl [@bentoCH](https://github.com/bentoCH)
+- Joël Daout [@joeldaout](https://github.com/joeldaout)
+- Arthur Babey [@arthurbabey](https://github.com/arthurbabey)
+
+The necessary can easily be setup using `pip` and the provided `requirements.txt`.
+```bash
+   pip install -r requirements.txt
+```
  
  ## Project structure
 <pre>
