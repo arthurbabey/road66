@@ -32,32 +32,54 @@ Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
  
  
- .
+ ## Project structure
+<pre>
+.
 ├── README.md
 ├── checkpoints                             Trained models as .pt file
 ├── data            
-│   └── train
-│       ├── groundtruth                     Label images (400x400)
-│       └── images                          Satelite images (400x400)
+│   └── train
+│       ├── groundtruth                     Label images (400x400)
+│       └── images                          Satelite images (400x400)
 |   └── test
-│       ├── predictions                     Predicted label images (608x608)
-│       └── images                          Satelite images (608x608)
+│       ├── predictions                     Predicted label images (608x608)
+│       └── images                          Satelite images (608x608)
 ├── plots   
 ├── report                                  Final report
 ├── src                                     Source files (descriptions are in files directly)
-│   ├── datasets                        
-│   │   ├── aerial_dataset.py
-│   │   └── patched_aerial_dataset.py
-│   ├── helpers
-│   │   ├── cross_val.py
-│   │   ├── prediction.py
-│   │   ├── search.py
-│   │   ├── training.py
-│   │   └── training_crossval.py
-│   ├── models
-│   │   └── uNet.py
-│   ├── notebooks
-│   │
-│   ├── run.py                          Main file to train and generate predictions
-│  
-└── submissions                         Generated CSV submissions for AIcrowd
+│   ├── datasets                        
+│   │   ├── aerial_dataset.py
+│   │   └── patched_aerial_dataset.py
+│   ├── helpers
+│   │   ├── cross_val.py
+│   │   ├── prediction.py
+│   │   ├── search.py
+│   │   ├── training.py
+│   │   └── training_crossval.py
+│   ├── kaggle
+│   │   └── mask_to_submission.py
+│   ├── models
+│   │   └── rsm.py
+│   │   └── uNet.py
+│   ├── notebooks
+│   │   ├── Pipeline.ipynb
+│   │   ├── Pipeline_crossval.ipynb
+│   │   ├── cnn.ipynb
+│   │   ├── forest.ipynb
+│   ├── postprocessing
+│   │   ├── graph.py
+│   │   ├── majority_voting.py
+│   │   └── vectors.py
+│   ├── preprocessing
+│   │   ├── augmentation_config.py
+│   │   ├── channels.py
+│   │   ├── labeling.py
+│   │   ├── loading.py
+│   │   ├── patch.py
+│   │   ├── prepare_images.py
+│   │   └── rotation.py
+│   ├── run.py                          Main file to train and generate predictions
+│   └── visualization
+│       └── helpers.py
+└── submissions                         Generated CSV submissions for Kaggle
+</pre>
