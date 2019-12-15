@@ -30,3 +30,34 @@ prediction task.
 
 Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
+ 
+ 
+ .
+├── README.md
+├── checkpoints                             Trained models as .pt file
+├── data            
+│   └── train
+│       ├── groundtruth                     Label images (400x400)
+│       └── images                          Satelite images (400x400)
+|   └── test
+│       ├── predictions                     Predicted label images (608x608)
+│       └── images                          Satelite images (608x608)
+├── plots   
+├── report                                  Final report
+├── src                                     Source files (descriptions are in files directly)
+│   ├── datasets                        
+│   │   ├── aerial_dataset.py
+│   │   └── patched_aerial_dataset.py
+│   ├── helpers
+│   │   ├── cross_val.py
+│   │   ├── prediction.py
+│   │   ├── search.py
+│   │   ├── training.py
+│   │   └── training_crossval.py
+│   ├── models
+│   │   └── uNet.py
+│   ├── notebooks
+│   │
+│   ├── run.py                          Main file to train and generate predictions
+│  
+└── submissions                         Generated CSV submissions for AIcrowd
