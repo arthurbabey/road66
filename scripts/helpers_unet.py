@@ -215,7 +215,7 @@ def load_testset(path = 'Data/test_set_images'):
   return imgs_test
 
 
-def test_image_unet_submission(imgs_test, size = 400, filename = 'submission.csv'):
+def test_image_unet_submission(imgs_test, size = 400, model = model, filename = 'submission.csv'):
 
 
   img1 = []
@@ -275,13 +275,16 @@ def test_image_unet_submission(imgs_test, size = 400, filename = 'submission.csv
     list_m1.append(m1)
     m2 = np.concatenate((img_pred3[i, 0:shift, :, :], img_pred4[i, :, :, :]), axis = 0)
     list_m2.append(m2)
+    
+  list_m1 = np.asarray(list_m1)
+  list_m2 = np.asarray(list_m2)
 
   for i in range(50):
-
     merge = np.concatenate((list_m1[i,:,:,:], list_m2[i, :, (size - shift):size, :]), axis=1)
     list_merge.append(merge)
 
-  y_pred = np.asarray(y_pred)
+    
+  y_pred = np.asarray(list_merge)
 
   pred_patch = [img_crop(y_pred[i], 16, 16) for i in range(y_pred.shape[0])]
   pred_patch = np.asarray([pred_patch[i][j] for i in range(len(pred_patch)) for j in range(len(pred_patch[i]))])
