@@ -7,15 +7,11 @@ import matplotlib.image as mpimg
 from PIL import Image
 import matplotlib.pyplot as plt
 
-
-
-
-sys.path.append('/Users/arthurbabey/Documents/master2/ML/road66/scripts')
-
-
+from PIL import Image
 from skimage.transform import rotate
 from skimage.transform import resize
 from sklearn.model_selection import train_test_split
+
 
 
 
@@ -106,13 +102,16 @@ def resize_image(X, Y, size = 512):
     return Xresize, Yresize
 
 
+def create_submission(y_pred, filename = filename, patch_size = 16, img_size = 608):
+    """
+    Create a submission (csv format) for AIcrowd
+    from given prediction
 
-
-def create_submission(y_pred, submission_filename, patch_size = 16, images_size = 608):
-    n_patches = images_size // patch_size
+    """
+    n = img_size // patch_size
     y_pred = np.reshape(y_pred, (-1, n_patches, n_patches))
 
-    with open(submission_filename, 'w') as f:
+    with open(filename, 'w') as f:
         f.write('id,prediction\n')
         for i in range(y_pred.shape[0]):
             img = y_pred[i]
@@ -215,8 +214,12 @@ def load_testset(path = 'Data/test_set_images'):
   return imgs_test
 
 
-def test_image_unet_submission(imgs_test, size = 400, model = model, filename = 'submission.csv'):
+def test_image_unet_submission(imgs_test, model, size = 400, foreground_threshold = 0.25, filename = 'submission.csv'):
+    """
+    From imgs_test (608x608 size) crop the image into 400x400 to be given to the model and then call create_submission
+    Patches prediction are threshold with foreground_threshold
 
+    """
 
   img1 = []
   img2 = []
@@ -249,17 +252,17 @@ def test_image_unet_submission(imgs_test, size = 400, model = model, filename = 
   img_pred4 = model.predict(np.asarray(img4), batch_size = 1, verbose = 1)
 
 
-  img_pred1[img_pred1 <= 0.5] = 0
-  img_pred1[img_pred1 > 0.5] = 1
+  img_pred1[img_pred1 <= 0.557] = 0
+  img_pred1[img_pred1 > 0.557] = 1
 
-  img_pred2[img_pred2 <= 0.5] = 0
-  img_pred2[img_pred2 > 0.5] = 1
+  img_pred2[img_pred2 <= 0.557] = 0
+  img_pred2[img_pred2 > 0.557] = 1
 
-  img_pred3[img_pred3 <= 0.5] = 0
-  img_pred3[img_pred3 > 0.5] = 1
+  img_pred3[img_pred3 <= 0.557] = 0
+  img_pred3[img_pred3 > 0.557] = 1
 
-  img_pred4[img_pred4 <= 0.5] = 0
-  img_pred4[img_pred4 > 0.5] = 1
+  img_pred4[img_pred4 <= 0.557] = 0
+  img_pred4[img_pred4 > 0.557] = 1
 
   img1 = np.asarray(img1)
   img2 = np.asarray(img2)
@@ -275,7 +278,7 @@ def test_image_unet_submission(imgs_test, size = 400, model = model, filename = 
     list_m1.append(m1)
     m2 = np.concatenate((img_pred3[i, 0:shift, :, :], img_pred4[i, :, :, :]), axis = 0)
     list_m2.append(m2)
-    
+
   list_m1 = np.asarray(list_m1)
   list_m2 = np.asarray(list_m2)
 
@@ -283,11 +286,11 @@ def test_image_unet_submission(imgs_test, size = 400, model = model, filename = 
     merge = np.concatenate((list_m1[i,:,:,:], list_m2[i, :, (size - shift):size, :]), axis=1)
     list_merge.append(merge)
 
-    
+
   y_pred = np.asarray(list_merge)
 
   pred_patch = [img_crop(y_pred[i], 16, 16) for i in range(y_pred.shape[0])]
   pred_patch = np.asarray([pred_patch[i][j] for i in range(len(pred_patch)) for j in range(len(pred_patch[i]))])
-  pred_patch = np.asarray([value_to_class(np.mean(pred_patch[i])) for i in range(pred_patch.shape[0])])
+  pred_patch = np.asarray([value_to_class(np.mean(pred_patch[i]), foreground_threshold=foreground_threshold) for i in range(pred_patch.shape[0])])
 
   create_submission(pred_patch, filename)
