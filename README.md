@@ -37,6 +37,13 @@ Evaluation Metric:
 - Joël Daout [@joeldaout](https://github.com/joeldaout)
 - Arthur Babey [@arthurbabey](https://github.com/arthurbabey)
 
+For this project we use theses libraries with the mentionned version.
+
+`Tensorflow : '2.1.0-rc1', 
+ Sklearn : '0.21.3', 
+ Numpy : '1.17.4', 
+ Scikit-image : '0.15.0')`
+
 The necessary can easily be setup using `pip` and the provided `requirements.txt`.
 ```bash
    pip install -r requirements.txt
