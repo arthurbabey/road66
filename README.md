@@ -33,12 +33,10 @@ We use the following libraries with the mentionned version.
 `Tensorflow : '2.1.0-rc1', 
  Sklearn : '0.21.3', 
  Numpy : '1.17.4', 
- Scikit-image : '0.15.0')`
+ Scikit-image : '0.15.0'
+ Keras : '2.3.1')`
 
-They  can easily be installed using `pip` and the provided `requirements.txt`.
-```bash
-   pip install -r requirements.txt
-```
+
  
  # Project structure
 <pre>
