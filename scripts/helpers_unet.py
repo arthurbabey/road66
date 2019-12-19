@@ -200,9 +200,9 @@ def test_image_unet_submission(imgs_test, model, size = 400, foreground_threshol
     img4.append(img)
 
   img_pred1 = model.predict(np.asarray(img1), batch_size = 1, verbose = 1)
-  img_pred2 = model.predict(np.asarray(img2), batch_size = 1, verbose = 1)
-  img_pred3 = model.predict(np.asarray(img3), batch_size = 1, verbose = 1)
-  img_pred4 = model.predict(np.asarray(img4), batch_size = 1, verbose = 1)
+  img_pred2 = model.predict(np.asarray(img2), batch_size = 1, verbose = 0)
+  img_pred3 = model.predict(np.asarray(img3), batch_size = 1, verbose = 0)
+  img_pred4 = model.predict(np.asarray(img4), batch_size = 1, verbose = 0)
 
 
   img_pred1[img_pred1 <= 0.557] = 0

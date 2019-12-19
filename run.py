@@ -23,8 +23,8 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 SUBMISSION_PATH = 'submission/new_submission.csv'
-TRAINSET_PATH = 'datasets/training/'
-TESTSET_PATH = 'datasets/test_set_images'
+TRAINSET_PATH = 'Datasets/training/'
+TESTSET_PATH = 'Datasets/test_set_images'
 
 IMG_SIZE = 400
 INPUT_SIZE = (IMG_SIZE, IMG_SIZE, 3)
