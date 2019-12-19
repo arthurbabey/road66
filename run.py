@@ -32,8 +32,6 @@ BATCH_SIZE = 1
 EPOCHS, STEP_PER_EPOCH = 100, 600
 FOREGROUND_THRESHOLD = 0.25
 
-a = googleDriveFileDownloader()
-a.downloadFile("https://drive.google.com/file/d/1-800K4wciXJA47NDFPp-DHhxDoi8CGSb/view?usp=sharing")
 
 """
 Setting seed for reproducibility
