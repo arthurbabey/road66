@@ -102,14 +102,14 @@ def resize_image(X, Y, size = 512):
     return Xresize, Yresize
 
 
-def create_submission(y_pred, filename = filename, patch_size = 16, img_size = 608):
+def create_submission(y_pred, filename = 'filename', patch_size = 16, img_size = 608):
     """
     Create a submission (csv format) for AIcrowd
     from given prediction
 
     """
     n = img_size // patch_size
-    y_pred = np.reshape(y_pred, (-1, n_patches, n_patches))
+    y_pred = np.reshape(y_pred, (-1, n, n))
 
     with open(filename, 'w') as f:
         f.write('id,prediction\n')
@@ -215,11 +215,7 @@ def load_testset(path = 'Data/test_set_images'):
 
 
 def test_image_unet_submission(imgs_test, model, size = 400, foreground_threshold = 0.25, filename = 'submission.csv'):
-    """
-    From imgs_test (608x608 size) crop the image into 400x400 to be given to the model and then call create_submission
-    Patches prediction are threshold with foreground_threshold
 
-    """
 
   img1 = []
   img2 = []
@@ -244,7 +240,6 @@ def test_image_unet_submission(imgs_test, model, size = 400, foreground_threshol
   for img in imgs_test:
     img = img[shift:608, shift:608, :]
     img4.append(img)
-
 
   img_pred1 = model.predict(np.asarray(img1), batch_size = 1, verbose = 1)
   img_pred2 = model.predict(np.asarray(img2), batch_size = 1, verbose = 1)
