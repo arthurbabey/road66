@@ -4,4 +4,6 @@ notebook/logreg_submission.csv
 notebook/DS_Store/**
 notebook/.ipynb_checkpoints/**
 notebook/cnn_submission.csv/**
+best_model/lastrun.h5
+scripts/__pycache__
 .DS_Store/**
