@@ -11,9 +11,13 @@ Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
  
  
- # Best model
+ # How to reproduce our best submission : 
  
- Our model was too heavy to be uploaded on github you can downloaded from `Google Drive` using this link : https://drive.google.com/open?id=1-800K4wciXJA47NDFPp-DHhxDoi8CGSb then you have to put it in the provided `best_model` folder.
+ First our best model was too heavy to be uploaded on github you can downloaded from `Google Drive` using this link : https://drive.google.com/open?id=1-800K4wciXJA47NDFPp-DHhxDoi8CGSb then you have to put it in the provided `best_model` folder.
+ 
+Then you'll be able to run the `run.py` which allows you to either obtain prediction using our pretrained model or running the model from scratch by running with the `-train` flag.
+
+You can also get the similar results by running the `notebook/unet.ipynb` on Google Colab. 
  
  # Contributors
 
@@ -21,9 +25,10 @@ Evaluation Metric:
 - Joël Daout [@joeldaout](https://github.com/joeldaout)
 - Arthur Babey [@arthurbabey](https://github.com/arthurbabey)
 
- # External libraries
+ # Python and external libraries
 
-For this project we use theses libraries with the mentionned version.
+This project has been developped using `Python 3.6`.
+We use the following libraries with the mentionned version.
 
 `Tensorflow : '2.1.0-rc1', 
  Sklearn : '0.21.3', 
@@ -40,27 +45,23 @@ They  can easily be installed using `pip` and the provided `requirements.txt`.
 .
 ├── README.md
 │                           
-├── data            
-│   └── train
-│       ├── groundtruth                     Label images (400x400)
-│       └── images                          Satelite images (400x400)
-|   └── test
-│       ├── predictions                     Predicted label images (608x608)
-│       └── images                          Satelite images (608x608)
+├── datasets            
+│   └── training
+│   │    ├── groundtruth                     Label images (400x400)
+│   │    └── images                          Satelite images (400x400)
+|   └── test_set_images                      Satelite images (608x608)
+│                               
 │  
 ├── report                                  Final report
 ├── scripts                                   
-│   │
-│   ├── best_models
-│   │   └── rsm.py
-│   │   └── uNet.py
+│   │──helpers_unet.py
+│   │  
+│   │──│unet.py 
+│   │ 
 │   ├── notebooks
-│   │   ├── Pipeline.ipynb
-│   │   ├── Pipeline_crossval.ipynb
-│   │   ├── cnn.ipynb
-│   │   ├── forest.ipynb
+│   │   ├── unet.ipynb  
 │   │
 │   └── best_model                      Folder to place our best model download from the link mentionned above
-│       
+│         
 └── submissions                         Best submission on AIcrowd
 </pre>
