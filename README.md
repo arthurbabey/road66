@@ -1,41 +1,27 @@
 # Project Road Segmentation
 
-For this choice of project task, we provide a set of satellite images acquired 
-from GoogleMaps. We also provide ground-truth images where each pixel is labeled 
-as road or background. 
+For this project task, we had to train a classifier to segment roads in satellite images from GoogleMaps, i.e assigns a label `road=1, background=0` to each pixel. provide a set of satellite images acquired 
 
-Your task is to train a classifier to segment roads in these images, i.e. 
-assigns a label `road=1, background=0` to each pixel.
 
-Submission system environment setup:
-
-1. The dataset is available from the 
+The dataset is available from the 
 [CrowdAI page](https://www.crowdai.org/challenges/epfl-ml-road-segmentation).
 
-2. Obtain the python notebook `segment_aerial_images.ipynb` from this github 
-folder, to see example code on how to extract the images as well as 
-corresponding labels of each pixel.
-
-The notebook shows how to use `scikit learn` to generate features from each 
-pixel, and finally train a linear classifier to predict whether each pixel is 
-road or background. Or you can use your own code as well. Our example code here 
-also provides helper functions to visualize the images, labels and predictions. 
-In particular, the two functions `mask_to_submission.py` and 
-`submission_to_mask.py` help you to convert from the submission format to a 
-visualization, and vice versa.
-
-3. As a more advanced approach, try `tf_aerial_images.py`, which demonstrates 
-the use of a basic convolutional neural network in TensorFlow for the same 
-prediction task.
 
 Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
  
- ### Contributors
+ 
+ # Best model
+ 
+ Our model was too heavy to be uploaded on github you can downloaded from `Google Drive` using this link : https://drive.google.com/open?id=1-800K4wciXJA47NDFPp-DHhxDoi8CGSb then you have to put it in the provided `best_model` folder.
+ 
+ # Contributors
 
 - Benoît Hohl [@bentoCH](https://github.com/bentoCH)
 - Joël Daout [@joeldaout](https://github.com/joeldaout)
 - Arthur Babey [@arthurbabey](https://github.com/arthurbabey)
+
+ # External libraries
 
 For this project we use theses libraries with the mentionned version.
 
@@ -44,16 +30,16 @@ For this project we use theses libraries with the mentionned version.
  Numpy : '1.17.4', 
  Scikit-image : '0.15.0')`
 
-The necessary can easily be setup using `pip` and the provided `requirements.txt`.
+They  can easily be installed using `pip` and the provided `requirements.txt`.
 ```bash
    pip install -r requirements.txt
 ```
  
- ## Project structure
+ # Project structure
 <pre>
 .
 ├── README.md
-├── checkpoints                             Trained models as .pt file
+│                           
 ├── data            
 │   └── train
 │       ├── groundtruth                     Label images (400x400)
@@ -61,21 +47,11 @@ The necessary can easily be setup using `pip` and the provided `requirements.txt
 |   └── test
 │       ├── predictions                     Predicted label images (608x608)
 │       └── images                          Satelite images (608x608)
-├── plots   
+│  
 ├── report                                  Final report
-├── src                                     Source files (descriptions are in files directly)
-│   ├── datasets                        
-│   │   ├── aerial_dataset.py
-│   │   └── patched_aerial_dataset.py
-│   ├── helpers
-│   │   ├── cross_val.py
-│   │   ├── prediction.py
-│   │   ├── search.py
-│   │   ├── training.py
-│   │   └── training_crossval.py
-│   ├── kaggle
-│   │   └── mask_to_submission.py
-│   ├── models
+├── scripts                                   
+│   │
+│   ├── best_models
 │   │   └── rsm.py
 │   │   └── uNet.py
 │   ├── notebooks
@@ -83,20 +59,8 @@ The necessary can easily be setup using `pip` and the provided `requirements.txt
 │   │   ├── Pipeline_crossval.ipynb
 │   │   ├── cnn.ipynb
 │   │   ├── forest.ipynb
-│   ├── postprocessing
-│   │   ├── graph.py
-│   │   ├── majority_voting.py
-│   │   └── vectors.py
-│   ├── preprocessing
-│   │   ├── augmentation_config.py
-│   │   ├── channels.py
-│   │   ├── labeling.py
-│   │   ├── loading.py
-│   │   ├── patch.py
-│   │   ├── prepare_images.py
-│   │   └── rotation.py
-│   ├── run.py                          Main file to train and generate predictions
-│   └── visualization
-│       └── helpers.py
-└── submissions                         Generated CSV submissions for Kaggle
+│   │
+│   └── best_model                      Folder to place our best model download from the link mentionned above
+│       
+└── submissions                         Best submission on AIcrowd
 </pre>
