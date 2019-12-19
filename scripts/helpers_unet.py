@@ -121,59 +121,18 @@ def create_submission(y_pred, filename = 'filename', patch_size = 16, img_size =
                     f.write(name + '\n')
 
 
-def balance_data(x_train, y_train):
-    c0 = 0  # bgrd
-    c1 = 0  # road
-    for i in range(len(y_train)):
-        if y_train[i][0] == 1:
-            c0 = c0 + 1
-        else:
-            c1 = c1 + 1
-    print('Number of data points per class: c0 = ' + str(c0) + ' c1 = ' + str(c1))
 
-    print('Balancing training data...')
-    min_c = min(c0, c1)
-    idx0 = [i for i, j in enumerate(y_train) if j[0] == 1]
-    idx1 = [i for i, j in enumerate(y_train) if j[1] == 1]
-    new_indices = idx0[0:min_c] + idx1[0:min_c]
-    print(len(new_indices))
-    print(x_train.shape)
-    x_train = x_train[new_indices, :, :, :]
-    y_train = y_train[new_indices]
-
-    train_size = y_train.shape[0]
-
-    c0 = 0
-    c1 = 0
-    for i in range(len(y_train)):
-        if y_train[i][0] == 1:
-            c0 = c0 + 1
-        else:
-            c1 = c1 + 1
-    print('Number of data points per class: c0 = ' + str(c0) + ' c1 = ' + str(c1))
-
-    return x_train, y_train
-
-
-def img_crop(im, w, h, border = 0, step = 16):
-    """
-    Return the patches list of an image.
-    """
+def img_crop(im, w, h):
     list_patches = []
     imgwidth = im.shape[0]
     imgheight = im.shape[1]
     is_2d = len(im.shape) < 3
-    if border != 0:
-        im_r = np.pad(im[:,:,0], ((border, border), (border, border)), 'reflect')
-        im_g = np.pad(im[:,:,1], ((border, border), (border, border)), 'reflect')
-        im_b = np.pad(im[:,:,2], ((border, border), (border, border)), 'reflect')
-        im = np.dstack((im_r, im_g, im_b))
-    for i in range(0,imgheight,step):
-        for j in range(0,imgwidth,step):
+    for i in range(0,imgheight,h):
+        for j in range(0,imgwidth,w):
             if is_2d:
-                im_patch = im[j:j+w+2*border, i:i+h+2*border]
+                im_patch = im[j:j+w, i:i+h]
             else:
-                im_patch = im[j:j+w+2*border, i:i+h+2*border, :]
+                im_patch = im[j:j+w, i:i+h, :]
             list_patches.append(im_patch)
     return list_patches
 
@@ -215,7 +174,6 @@ def load_testset(path = 'Data/test_set_images'):
 
 
 def test_image_unet_submission(imgs_test, model, size = 400, foreground_threshold = 0.25, filename = 'submission.csv'):
-
 
   img1 = []
   img2 = []

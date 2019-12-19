@@ -29,8 +29,9 @@ TESTSET_PATH = 'datasets/test_set_images'
 IMG_SIZE = 400
 INPUT_SIZE = (IMG_SIZE, IMG_SIZE, 3)
 BATCH_SIZE = 1
-EPOCHS, STEP_PER_EPOCH = 100, 600
+EPOCHS, STEP_PER_EPOCH = 100, 540
 FOREGROUND_THRESHOLD = 0.25
+TEST_SIZE = 0.1
 
 
 """
@@ -47,26 +48,17 @@ def run(train = False):
     """
     Create best AIcrowd submission from either a pretrained model or by training the model from scratch
     """
-    sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
-    warnings.filterwarnings("ignore")
-
-
-    if sess:
-        print('Working on gpu')
 
     if train:
         model = training()
 
     else:
-        print('***************')
         model = unet(input_size = INPUT_SIZE)
-        print('*************** MODEL VA LOAD')
         model.load_weights('best_model/lastrun.h5')
         print('Model loaded ! ')
 
 
     imgs_test = load_testset(path = TESTSET_PATH)
-    print('*******  tttttt ********')
 
     test_image_unet_submission(imgs_test, model = model, filename = SUBMISSION_PATH, foreground_threshold = FOREGROUND_THRESHOLD)
 
@@ -75,7 +67,7 @@ def run(train = False):
 
 
 
-def training(test_size = 0.2):
+def training(test_size = TEST_SIZE):
     """
     Train model from scratch.
     """
@@ -89,7 +81,6 @@ def training(test_size = 0.2):
     Yr = np.reshape(Yr, (n, IMG_SIZE, IMG_SIZE, 1))
     x_train, x_val, y_train, y_val = train_test_split(Xr, Yr, test_size=test_size,  random_state=SEED)
 
-    print('TRAIN TEST SPLIT DONE')
 
     data_gen_args = dict(
             width_shift_range=0.05,
@@ -102,8 +93,6 @@ def training(test_size = 0.2):
     image_datagen = ImageDataGenerator(**data_gen_args, fill_mode ='reflect')
     train_gen = XYaugmentGenerator(x_train, y_train, image_datagen, seed = SEED, batch_size = BATCH_SIZE)
 
-    print('DATA AUGMENTATION DONE')
-
 
     model_filename = 'train_from_scratch.h5'
 
@@ -115,7 +104,7 @@ def training(test_size = 0.2):
                   optimizer= Adam(lr = 1e-4),
                   metrics=['binary_accuracy'])
 
-    history = model.fit_generator(
+    history = model.fit(
         train_gen,
         steps_per_epoch=STEP_PER_EPOCH,
         epochs=EPOCHS,
